@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SafeLink Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>SafeLink Generator</h1>
+      <p>Convert any URL into an encrypted redirection gateway.</p>
+    </header>
+
+    <main>
+      <form id="safelink-form">
+        <label for="targetUrl">Target URL</label>
+        <input id="targetUrl" type="url" placeholder="https://example.com/private-data" required />
+
+        <label for="note">Reference Note</label>
+        <input id="note" type="text" placeholder="e.g. For Internal Review Only" />
+
+        <button type="submit">Encrypt & Generate</button>
+      </form>
+
+      <section id="result" class="hidden">
+        <h2>Generation Success</h2>
+        <div class="output-wrapper">
+            <input id="safeLinkOutput" readonly />
+            <button id="copyBtn">Copy Link</button>
+        </div>
+        <p class="preview-label">Payload Structure:</p>
+        <pre id="preview"></pre>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+const form = document.getElementById("safelink-form");
+const resultSection = document.getElementById("result");
+const output = document.getElementById("safeLinkOutput");
+
+// This creates a link pointing to 'safelink-v2.html' in the same folder
+const BASE_PATH = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  
+  const payload = {
+    u: document.getElementById("targetUrl").value,
+    n: document.getElementById("note").value || "No note attached.",
+    ts: Date.now()
+  };
+
+  // Step 1: Encode the data so it isn't visible in the URL bar
+  const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
+  
+  // Step 2: Create the final URL
+  output.value = `${BASE_PATH}safelink-v2.html?data=${encoded}`;
+  
+  document.getElementById("preview").textContent = JSON.stringify(payload, null, 2);
+  resultSection.classList.remove("hidden");
+});
+
+document.getElementById("copyBtn").addEventListener("click", () => {
+  navigator.clipboard.writeText(output.value);
+  alert("SafeLink copied!");
+});
