@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SafeLink Verification</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <h2>Security Gateway</h2>
+        <p id="msg">Scanning link signature...</p>
+        
+        <div id="redirect-info" class="hidden">
+            <p style="color: #94a3b8; font-size: 0.9rem;">Sender Note:</p>
+            <blockquote id="note-display" style="border-left: 3px solid #3b82f6; padding-left: 10px; margin: 10px 0;"></blockquote>
+            
+            <p>Redirecting you safely in <span id="timer" style="color: #3b82f6; font-weight: bold;">5</span>s</p>
+            <button id="manual-btn">Go Now</button>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const data = params.get('data');
+
+        if (data) {
+            try {
+                // Decode the data
+                const payload = JSON.parse(decodeURIComponent(atob(data)));
+                const target = payload.u;
+
+                document.getElementById('msg').innerText = "Link Verified.";
+                document.getElementById('note-display').innerText = payload.n;
+                document.getElementById('redirect-info').classList.remove('hidden');
+
+                let count = 5;
+                const interval = setInterval(() => {
+                    count--;
+                    document.getElementById('timer').innerText = count;
+                    if (count <= 0) {
+                        clearInterval(interval);
+                        window.location.href = target;
+                    }
+                }, 1000);
+
+                document.getElementById('manual-btn').onclick = () => window.location.href = target;
+
+            } catch (e) {
+                document.getElementById('msg').innerText = "Error: Invalid or Corrupted Link.";
+            }
+        } else {
+            document.getElementById('msg').innerText = "Error: No data payload detected.";
+        }
+    </script>
+</body>
+</html>
